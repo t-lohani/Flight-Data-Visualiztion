@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>Lab 2</title>
+        <link rel="stylesheet" type="text/css" href="{{ url_for ('static', filename='style.css') }}">
+        <script src="{{ url_for('static', filename='bar.js') }}"></script>
+        <script src="{{ url_for('static', filename='d3.min.js') }}"></script>
+        <script src="{{ url_for('static', filename='jquery.min.js') }}"></script>
+    </head>
+
+    <body>
+		<div style="text-align: center;">
+			<p class = "header">CSE 564 Mini Project #2</p>
+		</div>
+		<div style="text-align: center;">
+			<p class = "sub_header">Flight Data Visualization</p>
+		</div>
+
+        <div class="selection">
+            <div class="dropdown" style="float:left">
+                <select id="reductionType"  onchange="selectReductionType()">
+                    <option value="-1">Select</option>
+                    <option value="PCA">PCA Random Sampling</option>
+                    <option value="ISOMAP">Isomap Random Sampling</option>
+                    <option value="MDS_EUCLIDEAN">MDS Euclidean Random Sampling</option>
+                    <option value="MDS_COSINE">MDS Cosine Random Sampling</option>
+                    <option value="MDS_CORRELATION">MDS Correlation Random Sampling</option>
+                    <option value="LATENT_SEMANTIC_ANALYSIS">Latent Semantic Analysis</option>
+                </select>
+            </div>
+
+            <div>
+                <form id="samplingType" action="">
+                    <input type="radio" name="gender" value="random_sampling" checked="checked">Random Sampling
+                    <input type="radio" name="gender" value="stratified_sampling">Stratified Sampling
+                </form>
+            </div>
+        </div>
+
+        <div id="body1"></div>
+    </body>
+</html>
