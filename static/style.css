@@ -1,20 +1,46 @@
 body {
 	font-family: verdana;
-	background-color: #ABC234;
+	background-color: #000;
 }
 
 .header {
-	color: #FFF;
+	color: steelblue;
+	font-size: 30px;
+	margin: 1px;
+}
+
+.sub_header {
+	color: steelblue;
 	font-size: 25px;
 	margin: 1px
 }
 
-.sub_header {
-	color: #FFF;
-	font-size: 20px;
-	margin: 1px
+.selection {
+    margin:30px;
 }
 
-.selection {
-    margin-top:50px;
+.dropdown {
+    color: white;
+    background-color: steelblue;
+}
+
+.radio_text {
+    color: white;
+    font-family: verdana;
+    font-size: 14px;
+}
+
+.tick {
+    fill: white;
+    stroke-width: 1px
+}
+
+.x_axis path,
+.x_axis line,
+.y_axis path,
+.y_axis line {
+    fill: none;
+    stroke: white;
+    stroke-width: 2px;
+    shape-rendering: crispEdges;
 }

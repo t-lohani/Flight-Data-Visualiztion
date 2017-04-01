@@ -18,22 +18,21 @@
 		</div>
 
         <div class="selection">
-            <div class="dropdown" style="float:left">
-                <select id="reductionType"  onchange="selectReductionType()">
+            <div class="dropdown_container" style="float:left">
+                <select class="dropdown" id="reductionType"  onchange="selectReductionType()">
                     <option value="-1" selected="selected">Select Reduction Technique</option>
                     <option value="PCA">Principle Component Analysis</option>
-                    <option value="ISOMAP">Manifold Learning Isomap</option>
                     <option value="MDS_EUCLIDEAN">Multidimensional Scaling Euclidean</option>
-                    <option value="MDS_COSINE">Multidimensional Scaling Cosine</option>
                     <option value="MDS_CORRELATION">Multidimensional Scaling Correlation</option>
-                    <option value="LSA">Latent Semantic Analysis</option>
                 </select>
             </div>
 
             <div>
                 <form id="samplingType" action="" style="visibility:hidden" onchange="selectSampling()">
-                    <input type="radio" name="sampling" value="random_sampling" checked="checked">Random Sampling
-                    <input type="radio" name="sampling" value="stratified_sampling">Stratified Sampling
+                    <input class="radio" id="random" type="radio" name="sampling" value="random_sampling" checked="checked">
+                    <label class="radio_text" for="random">Randomized Samling</label>
+                    <input class="radio" id="adaptive" type="radio" name="sampling" value="stratified_sampling">
+                    <label class="radio_text" for="adaptive">Stratified Sampling</label>
                 </form>
             </div>
         </div>
