@@ -1,18 +1,17 @@
 from __future__ import division
+
 import random
 import sys
+
 import numpy as np
 import pandas
-from sklearn.decomposition import TruncatedSVD
+import pylab as plt
+from flask import Flask, render_template
 from sklearn import manifold
 from sklearn.cluster import KMeans
 from sklearn.decomposition import PCA
 from sklearn.metrics import pairwise_distances
-from sklearn.datasets import fetch_20newsgroups
-from sklearn.feature_extraction.text import TfidfVectorizer
-from sklearn.pipeline import make_pipeline
-from sklearn.preprocessing import Normalizer
-from flask import Flask, render_template
+from scipy.spatial.distance import cdist, pdist
 
 app = Flask(__name__)
 
@@ -89,9 +88,44 @@ def adaptive_sampling():
 
     adaptive_samples = pandas.concat([sample_cluster0, sample_cluster1, sample_cluster2])
 
+
+def plotElbow():
+    print("Inside Plot elbow");
+    global input_file
+    features = input_file[['DepTime', 'CRSDepTime', 'ArrTime']]
+
+    k = range(1, 11)
+
+    clusters = [KMeans(n_clusters=c, init='k-means++').fit(features) for c in k]
+    centr_lst = [cc.cluster_centers_ for cc in clusters]
+
+    k_distance = [cdist(features, cent, 'euclidean') for cent in centr_lst]
+    # clust_indx = [np.argmin(kd, axis=1) for kd in k_distance]
+    distances = [np.min(kd, axis=1) for kd in k_distance]
+    avg_within = [np.sum(dist) / features.shape[0] for dist in distances]
+
+    # with_in_sum_square = [np.sum(dist ** 2) for dist in distances]
+    # to_sum_square = np.sum(pdist(features) ** 2) / features.shape[0]
+    # bet_sum_square = to_sum_square - with_in_sum_square
+
+    kidx = 2
+
+    fig = plt.figure()
+    ax = fig.add_subplot(111)
+    ax.plot(k, avg_within, 'g*-')
+    ax.plot(k[kidx], avg_within[kidx], marker='o', markersize=12, markeredgewidth=2, markeredgecolor='r', markerfacecolor='None')
+    plt.grid(True)
+    plt.xlabel('Number of clusters')
+    plt.ylabel('Average within-cluster sum of squares')
+    plt.title('Elbow for KMeans clustering')
+    print("End of plotElbow")
+    plt.show()
+    print("End of program");
+
 clustering()
 random_sampling()
 adaptive_sampling()
+plotElbow()
 
 @app.route("/")
 def index():
@@ -141,44 +175,6 @@ def pca_adaptive():
         print(e)
     return pandas.json.dumps(data_col)
 
-@app.route('/isomap_random')
-def isomap_random():
-    print("Inside Isomap Random");
-    # Isomap reduction with random sampling
-    data_col = []
-    try:
-        global random_samples
-        isomap_data = manifold.Isomap(n_components=2)
-        X = isomap_data.fit_transform(random_samples)
-        data_col = pandas.DataFrame(X)
-        data_col['departure'] = input_file['DepTime'][:sample_size]
-        data_col['arrival'] = input_file['ArrTime'][:sample_size]
-        data_col['clusterid'] = input_file['kcluster'][:sample_size]
-    except:
-        e = sys.exc_info()[0]
-        print(e)
-    return pandas.json.dumps(data_col)
-
-@app.route('/isomap_adaptive')
-def isomap_adaptive():
-    print("Inside Isomap adaptive")
-    # Isomap reduction with adaptive sampling
-    data_col = []
-    try:
-        global adaptive_samples
-        isomap_data = manifold.Isomap(n_components=2)
-        X = adaptive_samples[['DepTime', 'CRSDepTime', 'ArrTime']]
-        isomap_data.fit(X)
-        X = isomap_data.transform(X)
-        data_col = pandas.DataFrame(X)
-        data_col['departure'] = input_file['DepTime'][:sample_size]
-        data_col['arrival'] = input_file['ArrTime'][:sample_size]
-        data_col['clusterid'] = input_file['kcluster'][:sample_size]
-    except:
-        e = sys.exc_info()[0]
-        print(e)
-    return pandas.json.dumps(data_col)
-
 @app.route('/mds_euclidean_random')
 def mds_euclidean_random():
     print("Inside MDS Random using Euclidean Distance")
@@ -208,45 +204,6 @@ def mds_euclidean_adaptive():
         mds_data = manifold.MDS(n_components=2, dissimilarity='precomputed')
         X = adaptive_samples[['DepTime', 'CRSDepTime', 'ArrTime']]
         similarity = pairwise_distances(X, metric='euclidean')
-        X = mds_data.fit_transform(similarity)
-        data_col = pandas.DataFrame(X)
-        data_col['departure'] = input_file['DepTime'][:sample_size]
-        data_col['arrival'] = input_file['ArrTime'][:sample_size]
-        data_col['clusterid'] = input_file['kcluster'][:sample_size]
-    except:
-        e = sys.exc_info()[0]
-        print(e)
-    return pandas.json.dumps(data_col)
-
-@app.route('/mds_cosine_random')
-def mds_cosine_random():
-    print("Inside MDS Random using Cosine Distance")
-    # MSD reduction with random sampling and using cosine distance
-    data_col = []
-    try:
-        global random_samples
-        mds_data = manifold.MDS(n_components=2, dissimilarity='precomputed')
-        similarity = pairwise_distances(random_samples, metric='cosine')
-        X = mds_data.fit_transform(similarity)
-        data_col = pandas.DataFrame(X)
-        data_col['departure'] = input_file['DepTime'][:sample_size]
-        data_col['arrival'] = input_file['ArrTime'][:sample_size]
-        data_col['clusterid'] = input_file['kcluster'][:sample_size]
-    except:
-        e = sys.exc_info()[0]
-        print(e)
-    return pandas.json.dumps(data_col)
-
-@app.route('/mds_cosine_adaptive')
-def mds_cosine_adaptive():
-    print("Inside MDS Adaptive using Cosine Distance")
-    # MSD reduction with adaptive sampling and using cosine distance
-    data_col = []
-    try:
-        global adaptive_samples
-        mds_data = manifold.MDS(n_components=2, dissimilarity='precomputed')
-        X = adaptive_samples[['DepTime', 'CRSDepTime', 'ArrTime']]
-        similarity = pairwise_distances(X, metric='cosine')
         X = mds_data.fit_transform(similarity)
         data_col = pandas.DataFrame(X)
         data_col['departure'] = input_file['DepTime'][:sample_size]
@@ -295,39 +252,6 @@ def mds_correlation_adaptive():
         e = sys.exc_info()[0]
         print(e)
     return pandas.json.dumps(data_col)
-
-@app.route('/lsa')
-def lsa():
-    global n_components
-    global lsa_clusters
-    global n_features
-    svd = TruncatedSVD(n_components)
-    svd_normalizer = Normalizer(copy=False)
-    svd_lsa = make_pipeline(svd, svd_normalizer)
-    data_categories = [
-        'alt.atheism',
-        'talk.religion.misc',
-        'comp.graphics',
-        'sci.space',
-    ]
-    data = fetch_20newsgroups(subset='all', categories=data_categories, shuffle=True, random_state=42)
-    svd_vectorizer = TfidfVectorizer(max_df=0.5, max_features=n_features, min_df=2, stop_words='english', use_idf=True)
-    X = svd_vectorizer.fit_transform(data.data)
-    X = svd_lsa.fit_transform(X)
-    kmeans = KMeans(n_clusters=lsa_clusters, init='k-means++', max_iter=100, n_init=1)
-    kmeans.fit(X)
-    doc_original_space_centroids = svd.inverse_transform(kmeans.cluster_centers_)
-    doc_order_centroids = doc_original_space_centroids.argsort()[:, ::-1]
-
-    lsa_data = []
-    terms = svd_vectorizer.get_feature_names()
-    for i in range(lsa_clusters):
-        data = []
-        for ind in doc_order_centroids[i, :10]:
-            print(terms[ind])
-            data.append(terms[ind])
-        lsa_data.append(data)
-    return pandas.json.dumps(lsa_data)
 
 if __name__ == "__main__":
     app.run('localhost', '5050')
