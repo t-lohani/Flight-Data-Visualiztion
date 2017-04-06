@@ -4,24 +4,64 @@ body {
 }
 
 .header {
-	color: steelblue;
-	font-size: 30px;
+	color: white;
+	font-size: 20px;
 	margin: 1px;
 }
 
 .sub_header {
-	color: steelblue;
-	font-size: 25px;
+    color: white;
+	font-size: 15px;
 	margin: 1px
 }
 
-.selection {
-    margin:30px;
+.forward_btn {
+    background: url("forward.png") no-repeat;
+    font-size: 13px;
+    width: 80px;
+    height: 45px;
+    border: 0px solid #FFF;
+    float: left;
+    transform: translate(810px,0px);
+}
+
+.btn_forward {
+    background: url("forward.png") no-repeat;
+    font-size: 13px;
+    width: 80px;
+    height: 45px;
+    border: 0px solid #FFF;
+    float: left;
+    transform: translate(1100px,0px);
+}
+
+.back_btn {
+    float: left;
+    background: url("back.png") no-repeat;
+    font-size: 13px;
+    width: 80px;
+    height: 45px;
+    border: 0px solid #FFF;
 }
 
 .dropdown {
-    color: white;
-    background-color: steelblue;
+    color: black;
+    background-color: white;
+}
+
+.dropdown_container {
+    transform: translate(50px,10px);
+}
+
+.radio_container {
+    float: left;
+    transform: translate(0px,15px);
+}
+
+.radio_container2 {
+    float: left;
+    transform: translate(575px,10px);
+    margin: 2px;
 }
 
 .radio_text {
@@ -43,4 +83,123 @@ body {
     stroke: white;
     stroke-width: 2px;
     shape-rendering: crispEdges;
+}
+
+
+.screepath {
+    stroke: steelblue;
+    stroke-width: 3;
+    fill: none;
+}
+
+.axis {
+  shape-rendering: crispEdges;
+}
+
+.x_axis_scatter line {
+  fill: none;
+  stroke: grey;
+}
+
+.y_axis_scatter line {
+  fill: none;
+  stroke: grey;
+}
+
+.axis_label {
+    stroke: white;
+    stroke-width: 0px;
+    fill: white;
+}
+
+.chart_name {
+    stroke: white;
+    stroke-width: 0px;
+    fill: white;
+}
+
+.scree_name {
+    stroke: white;
+    stroke-width: 0px;
+    fill: white;
+    transform: translate(245px, 550px);
+}
+
+.frame {
+  fill: none;
+  stroke: #aaa;
+}
+
+path {
+    stroke: white;
+    stroke-width: 2;
+    fill: none;
+}
+
+.x_axis_scatter text {
+    fill: white;
+    stroke-width: 1px;
+    font-size: 10px;
+}
+
+.y_axis_scatter text {
+    fill: white;
+    stroke-width: 1px;
+    font-size: 10px;
+}
+
+.cell text {
+    stroke: white;
+    fill: white;
+    stroke-width: 0px;
+    font-size: 12px;
+}
+
+.task2 {
+    float: left;
+    transform: translate(290px,15px);
+}
+
+.task2c {
+    float: left;
+    transform: translate(550px,15px);
+}
+
+.barchart {
+    background: black;
+    transform: translate(75px, 30px)
+}
+
+.barchart rect {
+    fill: steelblue;
+}
+
+.loadings {
+  fill: white;
+  font-size: 15px
+}
+
+.names {
+  fill: white
+}
+
+.barline {
+  stroke: grey;
+  stroke-width: 2px;
+}
+
+.barrule {
+    fill: white;
+    font-size: 12px;
+}
+
+.barchart rect:hover {
+  fill: #CE0B29;
+}
+
+.hish_name {
+    stroke: white;
+    stroke-width: 0px;
+    fill: white;
+    transform: translate(550px, 480px);
 }
