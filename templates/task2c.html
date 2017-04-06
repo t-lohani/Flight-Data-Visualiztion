@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>Lab 2</title>
+        <link rel="stylesheet" type="text/css" href="{{ url_for ('static', filename='style.css') }}">
+        <script src="{{ url_for('static', filename='code.js') }}"></script>
+        <script src="{{ url_for('static', filename='d3.min.js') }}"></script>
+        <script src="{{ url_for('static', filename='jquery.min.js') }}"></script>
+    </head>
+
+    <body onload="onLoadTask2c()">
+		<div style="text-align: center;">
+			<p class = "header">CSE 564 Mini Project #2 - Flight Data Visualization</p>
+		</div>
+
+        <div>
+            <button type="button" class="back_btn" onclick="location.href = 'http://localhost:5050/'">Task 2(b)</button>
+
+            <div class="task2c">
+                <p class = "sub_header">Task 2 (c)</p>
+            </div>
+
+            <button type="button" class="btn_forward" onclick="location.href = 'http://localhost:5050/task3'">Task 3</button>
+
+        </div>
+
+        <div id="chart_container"></div>
+    </body>
+</html>

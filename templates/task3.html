@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>Lab 2</title>
+        <link rel="stylesheet" type="text/css" href="{{ url_for ('static', filename='style.css') }}">
+        <script src="{{ url_for('static', filename='code.js') }}"></script>
+        <script src="{{ url_for('static', filename='d3.min.js') }}"></script>
+        <script src="{{ url_for('static', filename='jquery.min.js') }}"></script>
+    </head>
+
+    <body onload="onLoadTask3()">
+		<div style="text-align: center;">
+			<p class = "header">CSE 564 Mini Project #2 - Flight Data Visualization</p>
+		</div>
+
+        <div style="margin-bottom: 10px;">
+            <button type="button" class="back_btn" onclick="location.href = 'http://localhost:5050/task2c'">Task 2</button>
+
+            <div class="dropdown_container" style="float: left">
+                <select class="dropdown" id="reductionType"  onchange="selectReductionType()">
+                    <option value="-1" selected="selected">Select Reduction Technique</option>
+                    <option value="PCA">Principle Component Analysis</option>
+                    <option value="MDS_EUCLIDEAN">Multidimensional Scaling Euclidean</option>
+                    <option value="MDS_CORRELATION">Multidimensional Scaling Correlation</option>
+                    <option value="SCATTERPLOT">Scatterplot Matrix</option>
+                </select>
+            </div>
+
+            <div style="text-align: center; float: left; transform: translate(315px,10px)">
+                <p class = "sub_header">Task 3</p>
+            </div>
+
+            <div class="radio_container2">
+                <form id="samplingType" action="" style="visibility:hidden" onchange="selectReductionType()">
+                    <input class="radio" id="random" type="radio" name="sampling" value="random_sampling" checked="checked">
+                    <label class="radio_text" for="random">Randomized Samling</label>
+                    <input class="radio" id="adaptive" type="radio" name="sampling" value="stratified_sampling">
+                    <label class="radio_text" for="adaptive">Stratified Sampling</label>
+                </form>
+            </div>
+
+        </div>
+
+        <div id="chart_container"></div>
+    </body>
+</html>
